@@ -21,7 +21,7 @@ class Spider:
         Spider.queue_file = Spider.project_name + '/queue.txt'
         Spider.crawled_file = Spider.project_name + '/crawled.txt'
         self.boot()
-        self.crawl_page('First spider', Spider.base_url)
+        self.crawl_page('First spider', Spider.base_url, Spider.base_url)
 
     # Creates directory and files for project on first run and starts the spider
     @staticmethod
@@ -33,13 +33,14 @@ class Spider:
 
     # Updates user display, fills queue and updates files
     @staticmethod
-    def crawl_page(thread_name, page_url):
+    def crawl_page(thread_name, page_url, source):
         if page_url not in Spider.crawled:
             print(thread_name + ' now crawling ' + page_url)
             print('Queue ' + str(len(Spider.queue)) + ' | Crawled  ' + str(len(Spider.crawled)))
             Spider.add_links_to_queue(Spider.gather_links(page_url))
             Spider.queue.remove(page_url)
-            Spider.crawled.add(page_url)
+            to_add = source + ' --> ' + page_url
+            Spider.crawled.add(to_add)
             Spider.update_files()
 
     # Converts raw response data into readable information and checks for proper html formatting

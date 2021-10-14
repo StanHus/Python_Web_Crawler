@@ -26,7 +26,10 @@ def create_workers():
 def work():
     while True:
         url = queue.get()
-        Spider.crawl_page(threading.current_thread().name, url)
+        url_split = url.split('/')
+        url_sliced = url_split[:len(url_split)-1]
+        source = '/'.join(url_sliced)
+        Spider.crawl_page(threading.current_thread().name, url, source)
         queue.task_done()
 
 
