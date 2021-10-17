@@ -1,7 +1,7 @@
 import threading
 from queue import Queue
 from spider import Spider
-from domain import *
+from domain_finder import *
 from general import *
 
 PROJECT_NAME = input("Input your project name: ")
@@ -28,7 +28,7 @@ def work():
         url = queue.get()
         url_split = url.split('/')
         url_sliced = url_split[:len(url_split)-1]
-        if len(url_split) == 3:
+        if len(url_split) == 3 or url == HOMEPAGE:
             source = 'Original url'
         else:
             source = '/'.join(url_sliced)
