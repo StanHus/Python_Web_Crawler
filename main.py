@@ -22,14 +22,24 @@ def create_workers():
         t.start()
 
 
+# Disregard http/https difference for the HOMEPAGE
+def disregard(url):
+    if url == HOMEPAGE:
+        split = url.split('/')
+        result = 'https:' + split[1:]
+    else:
+        result = url
+    return result
+
+
 # Do the next job in the queue
 def work():
     while True:
-        url = queue.get()
+        url = disregard(queue.get())
         url_split = url.split('/')
         url_sliced = url_split[:len(url_split)-1]
-        if len(url_split) == 3 or url == HOMEPAGE:
-            source = 'Original url'
+        if len(url_split) == 3:
+            source = HOMEPAGE
         else:
             source = '/'.join(url_sliced)
         Spider.crawl_page(threading.current_thread().name, url, source)
